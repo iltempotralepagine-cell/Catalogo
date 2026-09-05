@@ -21,7 +21,6 @@
         display: none;
       }
 
-      /* --- Fascia di fiducia --- */
       .fiducia-container {
         max-width: 1200px; margin: 0 auto 20px auto;
         display: grid; grid-template-columns: repeat(3, 1fr);
@@ -49,7 +48,6 @@
       }
       a.badge-fiducia:hover { border-color: #a9762f; }
 
-      /* --- Metodi di pagamento --- */
       .pagamenti-container {
         max-width: 1200px; margin: 0 auto 20px auto;
         background: #fffaf0; border: 2px solid #e0cfa8; border-radius: 10px;
@@ -68,7 +66,6 @@
       }
       .metodo-pagamento .icona { font-size: 1.3em; }
 
-      /* --- Barra di ricerca --- */
       .ricerca-container {
         max-width: 1200px; margin: 0 auto 15px auto;
         height: 175px;
@@ -103,7 +100,6 @@
         font-size: 0.85em; color: #7a5c33; min-height: 1.2em;
       }
 
-      /* --- Come funziona --- */
       .come-funziona {
         max-width: 1200px; margin: 0 auto 25px auto;
         display: flex; align-items: center; justify-content: center;
@@ -160,7 +156,6 @@
       .btn-carrello-libro.aggiunto { background-color: #6f8b4f; cursor: default; }
       .btn-carrello-libro:disabled { opacity: 0.9; }
 
-      /* --- Galleria a scorrimento verticale --- */
       .modale-overlay {
         display: none;
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -175,7 +170,6 @@
       }
       .modale-contenuto img { width: 100%; border-radius: 8px; }
 
-      /* --- Pulsante carrello fisso --- */
       .btn-carrello-fisso {
         position: fixed; bottom: 20px; right: 20px; z-index: 900;
         width: 64px; height: 64px; border-radius: 50%;
@@ -194,7 +188,6 @@
         font-size: 0.42em; font-weight: bold; border: 2px solid #fff8ec;
       }
 
-      /* --- Modale riepilogo carrello --- */
       .modale-carrello-overlay {
         display: none;
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -255,7 +248,6 @@
       .carrello-vuoto { text-align: center; color: #a08a5f; padding: 30px 0; }
       .chiudi-carrello { text-align: center; color: #a08a5f; margin-top: 15px; cursor: pointer; }
 
-      /* --- Regolazioni per schermi piccoli (mobile) --- */
       @media (max-width: 600px) {
         body { padding: 8px; padding-bottom: 80px; }
         .fiducia-container { gap: 6px; margin-bottom: 14px; }
@@ -290,7 +282,6 @@
       <img id="banner-header" src="" alt="Banner della Libreria">
     </div>
 
-    <!-- Fascia di fiducia -->
     <div class="fiducia-container">
       <div class="badge-fiducia">
         <div class="badge-fiducia-icona camioncino">🚚</div>
@@ -309,14 +300,12 @@
       </a>
     </div>
 
-    <!-- Metodi di pagamento -->
     <div class="pagamenti-container">
       <div class="pagamenti-titolo">💳 Pagamenti accettati:</div>
       <div class="metodo-pagamento"><span class="icona">🅿️</span> PayPal</div>
       <div class="metodo-pagamento"><span class="icona">💰</span> Bonifico o ricarica Tinaba (anche dal tabaccaio)</div>
     </div>
 
-    <!-- Barra di ricerca -->
     <div class="ricerca-container">
       <div class="ricerca-titolo">🔍 Cerca il tuo libro</div>
       <div class="ricerca-input-wrapper">
@@ -326,7 +315,6 @@
       <div class="risultati-info" id="risultati-info"></div>
     </div>
 
-    <!-- Come funziona -->
     <div class="come-funziona">
       <span>🛒 <strong>Aggiungi</strong> i libri al carrello</span>
       <span class="freccia">→</span>
@@ -338,18 +326,15 @@
     <div id="messaggio-caricamento" class="caricamento">Caricamento in corso...</div>
     <div id="catalogo" class="griglia-libri"></div>
 
-    <!-- Galleria foto -->
     <div id="modale-overlay" class="modale-overlay">
       <div class="modale-contenuto" id="modale-contenuto"></div>
     </div>
 
-    <!-- Pulsante carrello fisso -->
     <button class="btn-carrello-fisso" id="btn-apri-carrello">
       🛒
       <span id="badge-carrello" class="badge-carrello" style="display:none;">0</span>
     </button>
 
-    <!-- Riepilogo carrello -->
     <div id="modale-carrello-overlay" class="modale-carrello-overlay">
       <div class="modale-carrello-box">
         <h2 style="margin-top:0;">🛒 Il tuo carrello</h2>
@@ -366,9 +351,15 @@
       var tuttiLibri = [];
       var sogliaSpedizioneGratis = 45;
 
+      var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKZDrVWngWxGbZ6nsk_pZ1WRI8ZVDxe3cB-u1onnX5RlxtZXpc0l_97F6o6WTwAG0d7w/exec";
+
       window.onload = function() {
-        google.script.run.withSuccessHandler(mostraLibri).getDatiSito();
-        google.script.run.withSuccessHandler(mostraBanner).getBannerUrl();
+        fetch(SCRIPT_URL + "?action=getDatiSito")
+          .then(function(r) { return r.json(); })
+          .then(mostraLibri);
+        fetch(SCRIPT_URL + "?action=getBannerUrl")
+          .then(function(r) { return r.json(); })
+          .then(mostraBanner);
 
         document.getElementById('modale-overlay').addEventListener('click', chiudiGalleria);
         document.getElementById('btn-apri-carrello').addEventListener('click', apriCarrello);
