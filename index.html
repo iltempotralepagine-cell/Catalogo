@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Georgia&display=swap');
+
+      * { box-sizing: border-box; }
+
+      body {
+        font-family: 'Georgia', serif;
+        background-color: #f2e9d8;
+        background-image: linear-gradient(180deg, #f2e9d8 0%, #ede0c8 100%);
+        margin: 0; padding: 20px; padding-bottom: 100px;
+      }
+      .banner-container { max-width: 1200px; margin: 0 auto 15px auto; text-align: center; }
+      .banner-container img {
+        width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px;
+        box-shadow: 0 6px 16px rgba(90, 62, 27, 0.3);
+        border: 4px solid #fff8ec;
+        display: none;
+      }
+
+      /* --- Fascia di fiducia --- */
+      .fiducia-container {
+        max-width: 1200px; margin: 0 auto 20px auto;
+        display: grid; grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .badge-fiducia {
+        background: #fffaf0; border: 2px solid #e0cfa8; border-radius: 10px;
+        padding: 14px 10px; text-align: center;
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        text-decoration: none;
+        box-shadow: 0 3px 8px rgba(90, 62, 27, 0.12);
+      }
+      .badge-fiducia-icona { font-size: 2em; }
+      .badge-fiducia-icona.camioncino { animation: guida 2.5s ease-in-out infinite; }
+      @keyframes guida {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(6px); }
+      }
+      .badge-fiducia-titolo {
+        font-family: 'Playfair Display', serif; font-weight: 900;
+        color: #5a3e1b; font-size: 0.95em;
+      }
+      .badge-fiducia-testo {
+        color: #7a5c33; font-size: 0.78em; line-height: 1.3;
+      }
+      a.badge-fiducia:hover { border-color: #a9762f; }
+
+      /* --- Metodi di pagamento --- */
+      .pagamenti-container {
+        max-width: 1200px; margin: 0 auto 20px auto;
+        background: #fffaf0; border: 2px solid #e0cfa8; border-radius: 10px;
+        padding: 14px 16px;
+        display: flex; align-items: center; justify-content: center;
+        flex-wrap: wrap; gap: 20px;
+        box-shadow: 0 3px 8px rgba(90, 62, 27, 0.12);
+      }
+      .pagamenti-titolo {
+        font-family: 'Playfair Display', serif; font-weight: 900;
+        color: #5a3e1b; font-size: 1em; margin-right: 10px;
+      }
+      .metodo-pagamento {
+        display: flex; align-items: center; gap: 6px;
+        color: #6b4f28; font-size: 0.88em;
+      }
+      .metodo-pagamento .icona { font-size: 1.3em; }
+
+      /* --- Barra di ricerca --- */
+      .ricerca-container {
+        max-width: 1200px; margin: 0 auto 15px auto;
+        height: 175px;
+        background: #fffaf0;
+        border: 3px solid #a9762f;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(90, 62, 27, 0.2);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 12px; padding: 15px;
+      }
+      .ricerca-titolo {
+        font-family: 'Playfair Display', serif; font-weight: 900;
+        color: #5a3e1b; font-size: 1.3em; margin: 0;
+      }
+      .ricerca-input-wrapper {
+        display: flex; width: 100%; max-width: 600px; gap: 10px;
+      }
+      #campo-ricerca {
+        flex: 1; padding: 14px 16px; font-size: 1em;
+        border: 2px solid #e0cfa8; border-radius: 8px;
+        font-family: 'Georgia', serif; background: #fff;
+        color: #4a3113;
+      }
+      #campo-ricerca:focus { outline: none; border-color: #a9762f; }
+      .btn-ricerca {
+        background-color: #a9762f; color: #fff8ec; border: none;
+        padding: 0 20px; border-radius: 8px; cursor: pointer;
+        font-size: 1.3em; font-family: 'Georgia', serif;
+      }
+      .btn-ricerca:hover { background-color: #8f611f; }
+      .risultati-info {
+        font-size: 0.85em; color: #7a5c33; min-height: 1.2em;
+      }
+
+      /* --- Come funziona --- */
+      .come-funziona {
+        max-width: 1200px; margin: 0 auto 25px auto;
+        display: flex; align-items: center; justify-content: center;
+        flex-wrap: wrap; gap: 8px;
+        background: #f7edd8; border: 1px dashed #c9ab73; border-radius: 8px;
+        padding: 10px 16px; text-align: center;
+        color: #6b4f28; font-size: 0.85em;
+      }
+      .come-funziona strong { color: #5a3e1b; }
+      .come-funziona .freccia { color: #a9762f; margin: 0 4px; }
+
+      .griglia-libri {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px; max-width: 1200px; margin: 0 auto;
+      }
+      .card-libro {
+        background: #fffaf0;
+        border: 1px solid #e0cfa8;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(90, 62, 27, 0.15);
+        padding: 12px; text-align: center;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        display: flex; flex-direction: column;
+      }
+      .card-libro:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(90, 62, 27, 0.25);
+      }
+
+      .contenitore-copertina { position: relative; width: 100%; aspect-ratio: 5/6; cursor: pointer; }
+      .copertina { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block; border: 1px solid #e0cfa8; }
+      .etichetta-foto {
+        position: absolute; bottom: 0; left: 0; width: 100%;
+        background: rgba(58, 38, 10, 0.75); color: #fdf6e8;
+        font-size: 0.75em; padding: 6px 0;
+        border-radius: 0 0 6px 6px;
+        font-family: 'Georgia', serif;
+      }
+
+      .titolo { font-size: 0.95em; font-weight: bold; margin: 10px 0; color: #4a3113; line-height: 1.3; flex-grow: 1; }
+      .prezzo { font-size: 1.15em; color: #7a8b4f; font-weight: bold; font-family: 'Playfair Display', serif; }
+      .caricamento { text-align: center; font-size: 1.2em; color: #7a5c33; }
+      .nessun-risultato { text-align: center; font-size: 1.1em; color: #a08a5f; grid-column: 1 / -1; padding: 30px 0; }
+
+      .btn-carrello-libro {
+        display: inline-block; background-color: #a9762f; color: #fff8ec; border: none;
+        text-decoration: none; padding: 10px 10px; border-radius: 6px; margin-top: 12px;
+        font-weight: bold; font-size: 0.9em; cursor: pointer; width: 100%;
+        font-family: 'Georgia', serif;
+        transition: background-color 0.15s ease;
+      }
+      .btn-carrello-libro:hover { background-color: #8f611f; }
+      .btn-carrello-libro.aggiunto { background-color: #6f8b4f; cursor: default; }
+      .btn-carrello-libro:disabled { opacity: 0.9; }
+
+      /* --- Galleria a scorrimento verticale --- */
+      .modale-overlay {
+        display: none;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(30, 20, 8, 0.92); z-index: 1000;
+        overflow-y: auto; cursor: pointer;
+        padding: 30px 0;
+      }
+      .modale-contenuto {
+        max-width: 700px; margin: 0 auto;
+        display: flex; flex-direction: column; align-items: center; gap: 15px;
+        padding: 0 15px;
+      }
+      .modale-contenuto img { width: 100%; border-radius: 8px; }
+
+      /* --- Pulsante carrello fisso --- */
+      .btn-carrello-fisso {
+        position: fixed; bottom: 20px; right: 20px; z-index: 900;
+        width: 64px; height: 64px; border-radius: 50%;
+        background-color: #4a7a3c;
+        background-image: linear-gradient(145deg, #57905f 0%, #3c6634 100%);
+        color: #fdf6e8; border: 3px solid #fff8ec;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        font-size: 1.7em; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .badge-carrello {
+        position: absolute; top: -4px; right: -4px;
+        background-color: #c0392b; color: white;
+        border-radius: 50%; width: 24px; height: 24px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.42em; font-weight: bold; border: 2px solid #fff8ec;
+      }
+
+      /* --- Modale riepilogo carrello --- */
+      .modale-carrello-overlay {
+        display: none;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(30, 20, 8, 0.6); z-index: 1100;
+        justify-content: center; align-items: flex-end;
+      }
+      .modale-carrello-box {
+        background: #fffaf0; width: 100%; max-width: 500px;
+        max-height: 80vh; border-radius: 18px 18px 0 0;
+        padding: 20px; overflow-y: auto;
+        border-top: 3px solid #a9762f;
+      }
+      .modale-carrello-box h2 {
+        font-family: 'Playfair Display', serif; color: #5a3e1b;
+      }
+      .riga-carrello {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-bottom: 1px solid #e0cfa8;
+      }
+      .riga-carrello .info-libro { text-align: left; flex: 1; }
+      .riga-carrello .nome-libro { font-weight: bold; font-size: 0.95em; color: #4a3113; }
+      .riga-carrello .prezzo-libro { color: #7a8b4f; font-size: 0.9em; }
+      .btn-rimuovi {
+        border: none; background-color: #e8dcc0; color: #8a3a2a;
+        padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.9em;
+        font-family: 'Georgia', serif; font-weight: bold;
+        white-space: nowrap;
+      }
+      .totale-carrello {
+        display: flex; justify-content: space-between; font-size: 1.3em;
+        font-weight: bold; margin: 20px 0 5px 0; color: #4a3113;
+        font-family: 'Playfair Display', serif;
+      }
+      .nota-spedizione {
+        text-align: right; color: #a08a5f; font-size: 0.85em; margin-bottom: 15px;
+      }
+      .nota-spedizione.gratis {
+        text-align: center; color: #fff; background-color: #6f8b4f;
+        font-weight: bold; font-size: 0.95em; padding: 10px;
+        border-radius: 8px; animation: festeggia 0.6s ease;
+      }
+      @keyframes festeggia {
+        0% { transform: scale(0.9); opacity: 0; }
+        60% { transform: scale(1.05); }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .nota-pagamenti-carrello {
+        text-align: center; color: #7a5c33; font-size: 0.8em;
+        margin-bottom: 15px; padding: 8px; background: #f7edd8;
+        border-radius: 6px; border: 1px dashed #c9ab73;
+      }
+      .btn-invia-ordine {
+        display: block; width: 100%; background-color: #25D366; color: white;
+        border: none; padding: 15px; border-radius: 8px; font-size: 1.1em;
+        font-weight: bold; cursor: pointer; text-align: center; text-decoration: none;
+        font-family: 'Georgia', serif;
+      }
+      .carrello-vuoto { text-align: center; color: #a08a5f; padding: 30px 0; }
+      .chiudi-carrello { text-align: center; color: #a08a5f; margin-top: 15px; cursor: pointer; }
+
+      /* --- Regolazioni per schermi piccoli (mobile) --- */
+      @media (max-width: 600px) {
+        body { padding: 8px; padding-bottom: 80px; }
+        .fiducia-container { gap: 6px; margin-bottom: 14px; }
+        .badge-fiducia { padding: 8px 4px; gap: 2px; }
+        .badge-fiducia-icona { font-size: 1.4em; }
+        .badge-fiducia-titolo { font-size: 0.68em; }
+        .badge-fiducia-testo { font-size: 0.6em; }
+        .pagamenti-container { padding: 10px 12px; gap: 10px; margin-bottom: 14px; }
+        .pagamenti-titolo { font-size: 0.85em; width: 100%; text-align: center; margin: 0 0 4px 0; }
+        .metodo-pagamento { font-size: 0.72em; }
+        .ricerca-container { height: 140px; padding: 10px; gap: 8px; }
+        .ricerca-titolo { font-size: 1em; }
+        #campo-ricerca { padding: 10px 12px; font-size: 0.9em; }
+        .btn-ricerca { padding: 0 14px; font-size: 1.1em; }
+        .come-funziona { font-size: 0.7em; padding: 8px 10px; margin-bottom: 16px; }
+        .griglia-libri {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 6px;
+        }
+        .card-libro { padding: 5px; border-radius: 6px; }
+        .titolo { font-size: 0.62em; margin: 5px 0; line-height: 1.15; }
+        .prezzo { font-size: 0.75em; }
+        .btn-carrello-libro { font-size: 0.6em; padding: 6px 3px; margin-top: 6px; }
+        .etichetta-foto { font-size: 0.5em; padding: 3px 0; }
+        .btn-carrello-fisso { width: 52px; height: 52px; font-size: 1.3em; bottom: 12px; right: 12px; }
+        .badge-carrello { width: 18px; height: 18px; font-size: 0.38em; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="banner-container">
+      <img id="banner-header" src="" alt="Banner della Libreria">
+    </div>
+
+    <!-- Fascia di fiducia -->
+    <div class="fiducia-container">
+      <div class="badge-fiducia">
+        <div class="badge-fiducia-icona camioncino">🚚</div>
+        <div class="badge-fiducia-titolo">Spediamo in tutta Europa</div>
+        <div class="badge-fiducia-testo">Ovunque tu sia, il tuo libro arriva</div>
+      </div>
+      <div class="badge-fiducia">
+        <div class="badge-fiducia-icona">📦</div>
+        <div class="badge-fiducia-titolo">Spedizione gratuita</div>
+        <div class="badge-fiducia-testo">In Italia, sopra i 45€ di spesa</div>
+      </div>
+      <a class="badge-fiducia" href="https://www.ebay.it/str/iltempotralegine" target="_blank">
+        <div class="badge-fiducia-icona">✅</div>
+        <div class="badge-fiducia-titolo">Acquista in sicurezza</div>
+        <div class="badge-fiducia-testo">Ci trovi anche su eBay come negozio ufficiale</div>
+      </a>
+    </div>
+
+    <!-- Metodi di pagamento -->
+    <div class="pagamenti-container">
+      <div class="pagamenti-titolo">💳 Pagamenti accettati:</div>
+      <div class="metodo-pagamento"><span class="icona">🅿️</span> PayPal</div>
+      <div class="metodo-pagamento"><span class="icona">💰</span> Bonifico o ricarica Tinaba (anche dal tabaccaio)</div>
+    </div>
+
+    <!-- Barra di ricerca -->
+    <div class="ricerca-container">
+      <div class="ricerca-titolo">🔍 Cerca il tuo libro</div>
+      <div class="ricerca-input-wrapper">
+        <input type="text" id="campo-ricerca" placeholder="Scrivi un titolo, autore...">
+        <button class="btn-ricerca" id="btn-cancella-ricerca">✕</button>
+      </div>
+      <div class="risultati-info" id="risultati-info"></div>
+    </div>
+
+    <!-- Come funziona -->
+    <div class="come-funziona">
+      <span>🛒 <strong>Aggiungi</strong> i libri al carrello</span>
+      <span class="freccia">→</span>
+      <span>📲 <strong>Invia l'ordine</strong> su WhatsApp</span>
+      <span class="freccia">→</span>
+      <span>💬 Ti rispondiamo subito per <strong>pagamento e spedizione</strong></span>
+    </div>
+
+    <div id="messaggio-caricamento" class="caricamento">Caricamento in corso...</div>
+    <div id="catalogo" class="griglia-libri"></div>
+
+    <!-- Galleria foto -->
+    <div id="modale-overlay" class="modale-overlay">
+      <div class="modale-contenuto" id="modale-contenuto"></div>
+    </div>
+
+    <!-- Pulsante carrello fisso -->
+    <button class="btn-carrello-fisso" id="btn-apri-carrello">
+      🛒
+      <span id="badge-carrello" class="badge-carrello" style="display:none;">0</span>
+    </button>
+
+    <!-- Riepilogo carrello -->
+    <div id="modale-carrello-overlay" class="modale-carrello-overlay">
+      <div class="modale-carrello-box">
+        <h2 style="margin-top:0;">🛒 Il tuo carrello</h2>
+        <div id="lista-carrello"></div>
+        <div id="totale-carrello-container"></div>
+        <div class="chiudi-carrello" id="btn-chiudi-carrello">Chiudi e continua a guardare</div>
+      </div>
+    </div>
+
+    <script>
+      var carrello = {};
+      var numeroWhatsApp = "393297953162";
+      var datiLibri = {};
+      var tuttiLibri = [];
+      var sogliaSpedizioneGratis = 45;
+
+      window.onload = function() {
+        google.script.run.withSuccessHandler(mostraLibri).getDatiSito();
+        google.script.run.withSuccessHandler(mostraBanner).getBannerUrl();
+
+        document.getElementById('modale-overlay').addEventListener('click', chiudiGalleria);
+        document.getElementById('btn-apri-carrello').addEventListener('click', apriCarrello);
+        document.getElementById('btn-chiudi-carrello').addEventListener('click', chiudiCarrello);
+        document.getElementById('campo-ricerca').addEventListener('input', eseguiRicerca);
+        document.getElementById('btn-cancella-ricerca').addEventListener('click', function() {
+          document.getElementById('campo-ricerca').value = "";
+          eseguiRicerca();
+        });
+      };
+
+      function mostraBanner(url) {
+        if (url !== "") {
+          var imgBanner = document.getElementById('banner-header');
+          imgBanner.src = url;
+          imgBanner.style.display = 'block';
+        }
+      }
+
+      function mostraLibri(libri) {
+        document.getElementById('messaggio-caricamento').style.display = 'none';
+        tuttiLibri = libri;
+        if (libri.length === 0) {
+          document.getElementById('catalogo').innerHTML = "<p>Nessun libro disponibile.</p>";
+          return;
+        }
+        disegnaLibri(libri);
+      }
+
+      function disegnaLibri(libri) {
+        var contenitore = document.getElementById('catalogo');
+
+        if (libri.length === 0) {
+          contenitore.innerHTML = '<div class="nessun-risultato">Nessun libro trovato. Prova un altro termine di ricerca. 🔍</div>';
+          return;
+        }
+
+        var html = "";
+        libri.forEach(function(libro) {
+          var idLibro = libro[0];
+          var titolo = libro[2];
+          var prezzo = libro[3].toString().replace("'", "");
+          var foto = libro[4] !== "NESSUNA FOTO" ? libro[4] : "https://via.placeholder.com/250x300?text=Nessuna+Foto";
+          var listaFotoCompleta = libro[5] ? libro[5] : "";
+
+          datiLibri[idLibro] = { titolo: titolo, prezzo: prezzo };
+
+          html += `
+            <div class="card-libro">
+              <div class="contenitore-copertina apri-galleria" data-foto="${escapeHtml(listaFotoCompleta)}">
+                <img src="${foto}" class="copertina" alt="Copertina di ${escapeHtml(titolo)}" loading="lazy">
+                <div class="etichetta-foto">📷 Altre foto</div>
+              </div>
+              <div class="titolo">${escapeHtml(titolo)}</div>
+              <div class="prezzo">€ ${prezzo}</div>
+              <button class="btn-carrello-libro ${carrello[idLibro] ? 'aggiunto' : ''}" id="btn-${idLibro}" data-id="${idLibro}" ${carrello[idLibro] ? 'disabled' : ''}>${carrello[idLibro] ? '✓ Nel carrello' : '🛒 Aggiungi'}</button>
+            </div>`;
+        });
+        contenitore.innerHTML = html;
+
+        document.querySelectorAll('.apri-galleria').forEach(function(el) {
+          el.addEventListener('click', function() {
+            apriGalleria(el.getAttribute('data-foto'));
+          });
+        });
+        document.querySelectorAll('.btn-carrello-libro').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            aggiungiAlCarrello(btn.getAttribute('data-id'), btn);
+          });
+        });
+      }
+
+      function eseguiRicerca() {
+        var termine = document.getElementById('campo-ricerca').value.trim().toLowerCase();
+        var infoDiv = document.getElementById('risultati-info');
+
+        if (termine === "") {
+          infoDiv.innerText = "";
+          disegnaLibri(tuttiLibri);
+          return;
+        }
+
+        var filtrati = tuttiLibri.filter(function(libro) {
+          var titolo = (libro[2] || "").toString().toLowerCase();
+          return titolo.indexOf(termine) !== -1;
+        });
+
+        infoDiv.innerText = filtrati.length + " risultat" + (filtrati.length === 1 ? "o" : "i") + " trovat" + (filtrati.length === 1 ? "o" : "i");
+        disegnaLibri(filtrati);
+      }
+
+      function escapeHtml(testo) {
+        var div = document.createElement('div');
+        div.innerText = testo;
+        return div.innerHTML;
+      }
+
+      function apriGalleria(listaFotoStringa) {
+        if (!listaFotoStringa) return;
+        var foto = listaFotoStringa.split(",");
+        var contenitore = document.getElementById('modale-contenuto');
+        var html = "";
+        foto.forEach(function(url) { html += `<img src="${url}">`; });
+        contenitore.innerHTML = html;
+        document.getElementById('modale-overlay').style.display = 'block';
+      }
+      function chiudiGalleria(e) {
+        if (e.target.id === 'modale-overlay') {
+          document.getElementById('modale-overlay').style.display = 'none';
+        }
+      }
+
+      function aggiungiAlCarrello(id, bottone) {
+        if (carrello[id]) return;
+
+        var info = datiLibri[id];
+        carrello[id] = { titolo: info.titolo, prezzo: info.prezzo };
+        aggiornaBadge();
+
+        bottone.classList.add('aggiunto');
+        bottone.disabled = true;
+        bottone.innerText = "✓ Nel carrello";
+      }
+
+      function rimuoviDalCarrello(id) {
+        delete carrello[id];
+        aggiornaBadge();
+
+        var bottoneCard = document.getElementById('btn-' + id);
+        if (bottoneCard) {
+          bottoneCard.classList.remove('aggiunto');
+          bottoneCard.disabled = false;
+          bottoneCard.innerText = "🛒 Aggiungi";
+        }
+
+        apriCarrello();
+      }
+
+      function aggiornaBadge() {
+        var totale = Object.keys(carrello).length;
+        var badge = document.getElementById('badge-carrello');
+        if (totale > 0) {
+          badge.style.display = 'flex';
+          badge.innerText = totale;
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+
+      function apriCarrello() {
+        var listaDiv = document.getElementById('lista-carrello');
+        var totaleDiv = document.getElementById('totale-carrello-container');
+        var ids = Object.keys(carrello);
+
+        if (ids.length === 0) {
+          listaDiv.innerHTML = '<div class="carrello-vuoto">Il carrello è vuoto.<br>Aggiungi qualche libro! 📚</div>';
+          totaleDiv.innerHTML = "";
+          document.getElementById('modale-carrello-overlay').style.display = 'flex';
+          return;
+        }
+
+        var html = "";
+        var totaleGenerale = 0;
+
+        ids.forEach(function(id) {
+          var item = carrello[id];
+          var prezzoTesto = item.prezzo;
+          var prezzoNum = parseFloat(prezzoTesto.replace(',', '.'));
+          var prezzoValido = !isNaN(prezzoNum);
+
+          if (prezzoValido) {
+            totaleGenerale += prezzoNum;
+          }
+
+          html += `
+            <div class="riga-carrello">
+              <div class="info-libro">
+                <div class="nome-libro">${escapeHtml(item.titolo)}</div>
+                <div class="prezzo-libro">${prezzoValido ? '€ ' + prezzoTesto : 'Prezzo da confermare'}</div>
+              </div>
+              <button class="btn-rimuovi" data-id="${id}">Rimuovi</button>
+            </div>`;
+        });
+        listaDiv.innerHTML = html;
+
+        var haSpedizioneGratis = totaleGenerale >= sogliaSpedizioneGratis;
+        var notaSpedizioneHtml = haSpedizioneGratis
+          ? '<div class="nota-spedizione gratis">🎉 Complimenti, hai raggiunto la spedizione GRATUITA! 🎉</div>'
+          : '<div class="nota-spedizione">+ spese di spedizione (gratis sopra i 45€ — mancano € ' + (sogliaSpedizioneGratis - totaleGenerale).toFixed(2) + ')</div>';
+
+        totaleDiv.innerHTML = `
+          <div class="totale-carrello">
+            <span>Totale</span>
+            <span>€ ${totaleGenerale.toFixed(2)}</span>
+          </div>
+          ${notaSpedizioneHtml}
+          <div class="nota-pagamenti-carrello">💳 Paghi con PayPal, bonifico o ricarica Tinaba (anche dal tabaccaio)</div>
+          <button class="btn-invia-ordine" id="btn-invia-ordine">📲 Invia ordine su WhatsApp</button>
+        `;
+
+        document.querySelectorAll('.btn-rimuovi').forEach(function(btn) {
+          btn.addEventListener('click', function() { rimuoviDalCarrello(btn.getAttribute('data-id')); });
+        });
+        document.getElementById('btn-invia-ordine').addEventListener('click', inviaOrdine);
+
+        document.getElementById('modale-carrello-overlay').style.display = 'flex';
+      }
+
+      function chiudiCarrello() {
+        document.getElementById('modale-carrello-overlay').style.display = 'none';
+      }
+
+      function inviaOrdine() {
+        var ids = Object.keys(carrello);
+        if (ids.length === 0) return;
+
+        var testo = "Ciao! Sono interessato a questi libri:%0A%0A";
+        var totaleGenerale = 0;
+
+        ids.forEach(function(id) {
+          var item = carrello[id];
+          var prezzoNum = parseFloat(item.prezzo.replace(',', '.'));
+          var prezzoValido = !isNaN(prezzoNum);
+          if (prezzoValido) {
+            totaleGenerale += prezzoNum;
+            testo += "• " + encodeURIComponent(item.titolo) + " (€ " + item.prezzo + ")%0A";
+          } else {
+            testo += "• " + encodeURIComponent(item.titolo) + " (prezzo da confermare)%0A";
+          }
+        });
+
+        testo += "%0ATotale libri: € " + totaleGenerale.toFixed(2);
+        if (totaleGenerale >= sogliaSpedizioneGratis) {
+          testo += "%0A🎉 Spedizione GRATUITA!";
+        } else {
+          testo += "%0A+ spese di spedizione";
+        }
+        testo += "%0A%0A💳 Pagamento con: PayPal, bonifico o ricarica Tinaba (anche dal tabaccaio)";
+
+        var url = "https://wa.me/" + numeroWhatsApp + "?text=" + testo;
+        window.open(url, "_blank");
+      }
+    </script>
+  </body>
+</html>
